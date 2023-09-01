@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TodoItem {
     private int id;
@@ -71,13 +72,28 @@ public class TodoItem {
             return false;
         }
     }
-    public String getSummary() {
-        return "ID: " + id +
-               ", Title: " + title +
-               ", Description: " + taskDescription +
-               ", Deadline: " + deadLine +
-               ", Done: " + isDone() +
-               ", Creator: " + creator.firstName() + " " + creator.lastName();
+
+    @Override
+    public String toString() {
+        return "TodoItem{" +
+                "ID: " + id +
+                ", Title: '" + title + '\'' +
+                ", Task Description: '" + taskDescription + '\'' +
+                ", Dead Line: " + deadLine +
+                ", Done: " + done +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TodoItem todoItem)) return false;
+        return id == todoItem.id && isDone() == todoItem.isDone() && Objects.equals(title, todoItem.title) && Objects.equals(taskDescription, todoItem.taskDescription) && Objects.equals(deadLine, todoItem.deadLine);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, taskDescription, deadLine);
     }
 }
 

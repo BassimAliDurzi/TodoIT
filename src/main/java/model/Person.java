@@ -1,10 +1,13 @@
 package model;
 
+import java.util.Objects;
+
 public class Person {
     private int id;
     private String firstName;
     private String lastName;
     private String email;
+    AppUser credentials;
 
     public Person(String firstName, String lastName, String email) {
         this.setFirstName(firstName);
@@ -29,6 +32,14 @@ public class Person {
         return lastName;
     }
 
+    public AppUser credentials() {
+        return credentials;
+    }
+
+    public void setCredentials(AppUser credentials) {
+        this.credentials = credentials;
+    }
+
     public void setLastName(String lastName) {
         if (lastName == null) throw new IllegalArgumentException("Not allowed to be null");
         this.lastName = lastName;
@@ -42,11 +53,26 @@ public class Person {
         if (email == null) throw new IllegalArgumentException("Not allowed to be null");
         this.email = email;
     }
-    public String getSummary() {
-        return "ID: " + id +
-               ", First name: " + firstName +
-               ", Last name: " + lastName +
-               ", Email: " + email;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "ID: " + id +
+                ", First Name: '" + firstName + '\'' +
+                ", Last Name: '" + lastName + '\'' +
+                ", Email: '" + email + '\'' +
+                '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person person)) return false;
+        return id == person.id && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(email, person.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName);
+    }
 }

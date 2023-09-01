@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class TodoItemTask {
     private int id;
     private boolean assigned;
@@ -39,10 +41,22 @@ public class TodoItemTask {
     @Override
     public String toString() {
         return "TodoItemTask{" +
-                "id: " + id +
-                ", assigned: " + assigned +
-                ", todoItem: " + todoItem +
-                ", assignee: " + assignee +
+                "ID: " + id +
+                ", Assigned: " + assigned +
+                ", TodoItem: " + todoItem +
+                ", Assignee: " + assignee +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TodoItemTask that)) return false;
+        return id == that.id && isAssigned() == that.isAssigned() && Objects.equals(todoItem, that.todoItem) && Objects.equals(assignee, that.assignee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, isAssigned(), todoItem, assignee);
     }
 }
