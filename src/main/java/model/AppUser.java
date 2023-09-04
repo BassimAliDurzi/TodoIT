@@ -1,11 +1,16 @@
 package model;
 
+import dao.AppUserDAO;
+
+import java.util.HashSet;
 import java.util.Objects;
 
-public class AppUser {
+public class AppUser implements AppUserDAO {
     private String userName;
     private String password;
     private AppRole role;
+
+    HashSet<AppUser> appUsers = new HashSet<>();
 
     public String userName() {
         return userName;
@@ -14,6 +19,10 @@ public class AppUser {
     public AppUser(String userName, String password) {
         this.setUserName(userName);
         this.setPassword(password);
+    }
+
+    public AppUser(String userName) {
+        this.setUserName(userName);
     }
 
     public void setUserName(String userName) {
@@ -57,5 +66,34 @@ public class AppUser {
     @Override
     public int hashCode() {
         return Objects.hash(userName, role);
+    }
+
+    @Override
+    public void persist(AppUser appUser) {
+        appUsers.add(appUser);
+    }
+
+    @Override
+    public AppUser findByUserName(String userName) {
+        AppUser searchedUser = new AppUser(userName);
+        for (AppUser appUser : appUsers) {
+            if (appUser.userName.equals(searchedUser.userName)) {
+                System.out.println(appUser.toString());
+            }
+        }
+        return searchedUser;
+    }
+
+    @Override
+    public void findAll(HashSet<AppUser> appUsers) {
+        for (AppUser appUser: appUsers) {
+            System.out.println(appUser);
+        }
+    }
+
+    @Override
+    public void remove() {
+        appUsers.remove(findByUserName(userName));
+
     }
 }

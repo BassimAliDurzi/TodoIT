@@ -1,13 +1,26 @@
 package model;
 
+import dao.TodoItemTaskDAO;
+import sequencers.TodoItemTaskIDSequencer;
+
+import java.util.HashSet;
 import java.util.Objects;
 
-public class TodoItemTask {
+public class TodoItemTask extends TodoItemTaskIDSequencer implements TodoItemTaskDAO {
     private int id;
     private boolean assigned;
     private TodoItem todoItem;
     private Person assignee;
 
+    HashSet<TodoItemTask> todoItemTasks = new HashSet<>();
+
+    public TodoItemTask(int id) {
+        super();
+    }
+
+    public TodoItemTask() {
+
+    }
 
     public int id() {
         return id;
@@ -41,7 +54,7 @@ public class TodoItemTask {
     @Override
     public String toString() {
         return "TodoItemTask{" +
-                "ID: " + id +
+                "ID: " + nextId() +
                 ", Assigned: " + assigned +
                 ", TodoItem: " + todoItem +
                 ", Assignee: " + assignee +
@@ -58,5 +71,50 @@ public class TodoItemTask {
     @Override
     public int hashCode() {
         return Objects.hash(id, isAssigned(), todoItem, assignee);
+    }
+
+    @Override
+    public void persist(TodoItemTask todoItemTask) {
+        todoItemTasks.add(todoItemTask);
+    }
+
+    @Override
+    public TodoItemTask findById(int id) {
+        TodoItemTask searchedTodoItemTask = new TodoItemTask(id);
+        for (TodoItemTask todoItemTask : todoItemTasks) {
+            if (todoItemTask.id == searchedTodoItemTask.id) {
+                System.out.println(todoItem);
+            }
+        }
+        return searchedTodoItemTask;
+    }
+
+    @Override
+    public void findAll(HashSet<TodoItemTask> todoItemTasks) {
+        for (TodoItemTask todoItemTask: todoItemTasks) {
+            System.out.println(todoItemTask);
+        }
+
+    }
+
+    @Override
+    public void findByAssignedStatus(boolean status) {
+
+    }
+
+    @Override
+    public TodoItemTask findByPersonId(int id) {
+        TodoItemTask personId = new TodoItemTask(id);
+        for (TodoItemTask todoItemTask : todoItemTasks) {
+            if (assignee.id() == personId.id) {
+                System.out.println(todoItemTask);
+            }
+        }
+        return personId;
+    }
+
+    @Override
+    public void remove() {
+        todoItemTasks.remove(findById(id));
     }
 }
